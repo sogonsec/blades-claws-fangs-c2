@@ -1,3 +1,5 @@
+Never built one of these but I can figure it out. This TODO may seem silly at first, because I've never done it and just trying to get what I think I need to do planned out. 
+
 # Server / Generic
 
 * Create command protocol, a common way of signaling to do things using Stargate references
