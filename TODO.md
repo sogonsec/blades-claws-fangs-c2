@@ -17,6 +17,8 @@ Reference https://attack.mitre.org/tactics/TA0011/ to try to be "compliant" to o
 
 # Agent - Windows
 
+Note: evading detection or being flagged by windows defender, etc, is a goal here. If Windows detects it as bad and isolates/deletes it, then the feature is incomplete. Consider learning from Dave Kennedy with for modifying signatures and retest once detection is uhh detected.
+
 * Create windows service agent in C
 * Create powershell agent
 * Create ASPX agent
