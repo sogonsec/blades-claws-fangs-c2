@@ -10,7 +10,7 @@ Never built one of these but I can figure it out. This TODO may seem silly at fi
     * Create ICMP service, spaced out icmp payload transfer... at something like 56 bytes at a time? 
     * Create FTP service, perhaps leveraging password and response (need to look at the command protocol)
     * Create SMTP service, perhaps hiding within a server response where a message ID or similiar would be shown
-* Figure out how to handle encryption of payloads (perhaps different for each service, unique key paid per agent? no idea)
+* Figure out how to handle encryption of payloads (perhaps different for each service, unique key pair per agent? no idea)
 * Figure out how to use data obfuscation of payloads
 
 # Agent - Windows
