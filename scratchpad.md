@@ -14,7 +14,7 @@ https://tools.ietf.org/html/rfc1035 RFC for protocol spec.
 
 - Perl https://metacpan.org/pod/Net::DNS::Nameserver#EXAMPLE if not wanting to code myself AND use perl
     - https://metacpan.org/pod/Moose revisit Moose if doing something of substance
-        - Moose also allows ease in hooking into subroutines using method modifiers https://metacpan.org/pod/distribution/Moose/lib/Moose/Manual/Concepts.pod#Method-modifiers
+        - Moose also allows ease in hooking into subroutines using method modifiers, possibly allowing plugin ability by default?? https://metacpan.org/pod/distribution/Moose/lib/Moose/Manual/Concepts.pod#Method-modifiers
 - Python example/POC if coding myself, which should be somewhat portable to other languages https://www.youtube.com/watch?v=HdrPWGZ3NRo (9 video series) 
 
 There's enough room in DKIM TXT for commands and output (mostly, need to explore compression and ascii encoding to fit in 512 byte - header]. Unsure how best to have agents know to query, other than regularly poll possible server communication mechanisms until something works. 
