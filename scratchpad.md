@@ -19,3 +19,4 @@ https://tools.ietf.org/html/rfc1035 RFC for protocol spec.
 
 There's enough room in DKIM TXT for commands and output (mostly, need to explore compression and ascii encoding to fit in 512 byte - header]. Unsure how best to have agents know to query, other than regularly poll possible server communication mechanisms until something works. 
 
+There's other DNS requests that are in the RFC that I haven't encoutered before, but could allow longer data payloads. It would be cool to hide data within the payload or something else that would be disregarded or ignored by the protocol itself but still not cause an error where it would only be found with reverse engineering the payload. Possibly going into the weeds there, but fun to think about. 
