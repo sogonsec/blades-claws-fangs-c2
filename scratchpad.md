@@ -47,7 +47,7 @@ Is there an already developed solution for event callback stuff? think signal/sl
 
 1. Write a configuration class to consume command line arguments and configuration files (ini?), to be available across every plugin and core.
 2. Write a logging class to allow writing log messages by some mechanism (configurable) and may need to be threadsafe, to be available across every plugin and core
-2. Write a plugin controller class, that allows functions to "register" to execute on plugin events. something like register_plugin('configuration_post_load', 'my_plugin_function'), and when the configuration is loaded normally, the plugin machinery would execute all functions at that time.
+2. Write a plugin controller class, that allows functions to "register" to execute on plugin events. something like register_plugin('configuration_post_load', 'my_plugin_function'), and when the configuration is loaded normally, the plugin machinery would execute my_plugin_function (all other registered functions) at that time.
 3. Write main function that executes the configuration class
 4. Create plugin events for every function, at a minimum at the start and end of the function.
 5. Stub out a DNS plugin and configuration 
