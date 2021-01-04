@@ -1,6 +1,6 @@
 # Basics
 
-* Bootstrap the project to build
+* [ ] Bootstrap the project to build
   * [x] Makefile
   * [x] glib
   * [x] libevent
