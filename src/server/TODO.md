@@ -1,6 +1,6 @@
 # Basics
 
-* Bootstrap the project to build
+* [ ] Bootstrap the project to build
   * [x] Makefile
   * [x] glib
   * [x] libevent
@@ -10,7 +10,6 @@
 * [ ] Handle socket creation
 * [ ] Handle socket event callbacks
 * [ ] Logging facilities
-*
  
 # Specifics
 
