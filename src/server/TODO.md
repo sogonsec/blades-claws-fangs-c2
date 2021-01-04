@@ -10,7 +10,6 @@
 * [ ] Handle socket creation
 * [ ] Handle socket event callbacks
 * [ ] Logging facilities
-*
  
 # Specifics
 
