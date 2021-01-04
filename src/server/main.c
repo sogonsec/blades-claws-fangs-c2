@@ -7,15 +7,15 @@
 #include <glib/gi18n.h>
 
 #include "cli_arguments.h"
+#include "configuration.h"
 
 
-int
-main (int argc, char **argv) {
+int main (int argc, char **argv) {
 	gchar **cli_args; /* CLI arguments */
+	Settings *conf;
 
 	/*
 	 * Read command line arguments
-	 * https://developer.gnome.org/glib/2.32/glib-Commandline-option-parser.html
 	 */
 #ifdef G_OS_WIN32
 	cli_args = g_win32_get_command_line ();
@@ -26,9 +26,30 @@ main (int argc, char **argv) {
 	cli_arguments_parse(cli_args);
 	g_strfreev (cli_args);
 
+
 	/*
 	 * Configuration file handling
 	 */
+	conf = load_configuration_file(cli_argument_configuration_file);
+	/* CLI overrides */
+	if (cli_argument_service_enable_dns && cli_argument_service_enable_dns != conf->service_enable_dns) {
+		g_debug("CLI override for service_enable_dns");
+		conf->service_enable_dns = cli_argument_service_enable_dns;
+	}
+	if (cli_argument_service_enable_http && cli_argument_service_enable_http != conf->service_enable_http) {
+		g_debug("CLI override for service_enable_http");
+		conf->service_enable_http = cli_argument_service_enable_http;
+	}
+	if (cli_argument_service_enable_smtp && cli_argument_service_enable_smtp != conf->service_enable_smtp) {
+		g_debug("CLI override for service_enable_smtp");
+
+		conf->service_enable_smtp = cli_argument_service_enable_smtp;
+	}
+	g_debug("FINAL configuration_file: %s", conf->configuration_file);
+	g_debug("FINAL service_enable_dns: %s", (conf->service_enable_dns?"TRUE":"FALSE"));
+	g_debug("FINAL service_enable_http: %s", (conf->service_enable_http?"TRUE":"FALSE"));
+	g_debug("FINAL service_enable_smtp: %s", (conf->service_enable_smtp?"TRUE":"FALSE"));
+
 
 
 	/*
@@ -38,4 +59,6 @@ main (int argc, char **argv) {
 	/*
 	 * Add sockets to event queue
 	 */
+
+	return(EXIT_SUCCESS);
 }

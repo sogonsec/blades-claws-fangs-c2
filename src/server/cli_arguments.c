@@ -11,29 +11,30 @@
 #define G_LOG_DOMAIN    ((gchar*) 0)
 
 
-/*static gboolean debug_enabled = FALSE;
-static gboolean verbose_enabled = FALSE;*/
-static gboolean	cli_argument_service_enable_dns	= FALSE;
-static gboolean	cli_argument_service_enable_http	= FALSE;
-static gboolean	cli_argument_service_enable_smtp	= FALSE;
-static gchar	*cli_argument_configuration_file	= "config.ini";
-
-static GOptionEntry cli_argument_options[] =
-{
-	/*{"debug", 'd', 0, G_OPTION_ARG_NONE, &debug_enabled, "Enable DEBUG mode (more verbose than --verbose)", NULL},
-	{"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose_enabled, "Enable VERBOSE output", NULL},*/
-	{"service_enable_dns", 0, 0, G_OPTION_ARG_NONE, &cli_argument_service_enable_dns, "Enable DNS Service", NULL},
-    {"service_enable_http", 0, 0, G_OPTION_ARG_NONE, &cli_argument_service_enable_http, "Enable HTTP Service", NULL},
-    {"service_enable_smtp", 0, 0, G_OPTION_ARG_NONE, &cli_argument_service_enable_smtp, "Enable SMTP Service", NULL},
-	{"configuration_file", 'c', 0, G_OPTION_ARG_FILENAME, &cli_argument_configuration_file, "Configuration File", NULL},
-	{NULL}
-};
-
 
 void cli_arguments_parse(gchar **args) {
-
 	GError *error = NULL;
 	GOptionContext *context;
+
+
+	static GOptionEntry cli_argument_options[] =
+	{
+		{"service_enable_dns", 0, 0, G_OPTION_ARG_NONE,
+				&cli_argument_service_enable_dns, "Enable DNS Service", NULL},
+	    {"service_enable_http", 0, 0, G_OPTION_ARG_NONE,
+	    		&cli_argument_service_enable_http, "Enable HTTP Service", NULL},
+	    {"service_enable_smtp", 0, 0, G_OPTION_ARG_NONE,
+	    		&cli_argument_service_enable_smtp, "Enable SMTP Service", NULL},
+		{"configuration_file", 'c', 0, G_OPTION_ARG_FILENAME,
+				&cli_argument_configuration_file, "Configuration File", NULL},
+		{NULL}
+	};
+
+	/* Defaults */
+	if (!cli_argument_configuration_file) {
+		cli_argument_configuration_file = "ori.ini";
+	}
+
 
 	context = g_option_context_new ("");
 	g_option_context_set_summary (context, "Ori C2 - A someday C2 program written by a @sogonsec");
@@ -43,9 +44,7 @@ void cli_arguments_parse(gchar **args) {
 		exit (EXIT_FAILURE);
 	}
 
-
 	g_log_set_handler(G_LOG_DOMAIN, G_LOG_LEVEL_MASK, g_log_default_handler, NULL);
-
 
 	if (cli_argument_service_enable_dns) {
 		g_info("Enabling the DNS service.\n");
@@ -70,4 +69,5 @@ void cli_arguments_parse(gchar **args) {
 	}
 	g_debug("cli_argument_configuration_file = %s", cli_argument_configuration_file);
 	g_info("Loading configuration from file '%s'.\n", cli_argument_configuration_file);
+
 }

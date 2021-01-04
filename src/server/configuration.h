@@ -6,9 +6,15 @@
  */
 
 #include <glib.h>
+#include <glib/gi18n.h>
 
 
-/* Verify configuration file works */
-/* Read section/key/value live */
-/* Save section/key/value live */
-/*  */
+typedef struct {
+	gchar		*configuration_file;
+	gboolean	 service_enable_dns;
+	gboolean	 service_enable_http;
+	gboolean	 service_enable_smtp;
+} Settings;
+
+Settings* load_configuration_file(gchar *filename);
+
