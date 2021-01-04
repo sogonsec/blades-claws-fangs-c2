@@ -14,4 +14,4 @@ ori:
 	${CC} ${LIBS} cli_arguments.o configuration.o main.o -o ori
 
 clean:
-	rm -rfv *.o ori
+	rm -rfv *.o ori *~
