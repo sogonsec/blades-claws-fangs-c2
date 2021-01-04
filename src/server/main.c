@@ -2,7 +2,7 @@
 #include <sys/socket.h>
 #include <fcntl.h>
 
-#include <event2/event.h>
+#include <event2/event.h> /* http://www.wangafu.net/~nickm/libevent-book/01_intro.html */
 
 #include <assert.h>
 #include <unistd.h>

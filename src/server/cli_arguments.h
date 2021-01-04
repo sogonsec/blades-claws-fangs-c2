@@ -1,5 +1,5 @@
-#ifndef CLI_ARGUMENTS_H_
-#define CLI_ARGUMENTS_H_
+#ifndef SERVER_CLI_ARGUMENTS_H_
+#define SERVER_CLI_ARGUMENTS_H_
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -11,4 +11,4 @@ gchar		*cli_argument_configuration_file;
 
 void cli_arguments_parse(gchar **args);
 
-#endif /* CLI_ARGUMENTS_H_ */
+#endif /* SERVER_CLI_ARGUMENTS_H_ */
