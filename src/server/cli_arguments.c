@@ -37,7 +37,7 @@ void cli_arguments_parse(gchar **args) {
 
 
 	context = g_option_context_new ("");
-	g_option_context_set_summary (context, "Ori C2 - A someday C2 program written by a @sogonsec");
+	g_option_context_set_summary (context, "Ori C2 - A WIP C2 program written by a @sogonsec");
 	g_option_context_add_main_entries(context, cli_argument_options, NULL);
 	if (!g_option_context_parse_strv(context, &args, &error)) {
 		g_error("command line argument parsing failed: %s\n", error->message);

@@ -4,6 +4,8 @@
  *
  * All configuration file stuff
  */
+#ifndef CONFIGURATION_H_
+#define CONFIGURATION_H_
 
 #include <glib.h>
 #include <glib/gi18n.h>
@@ -18,3 +20,4 @@ typedef struct {
 
 Settings* load_configuration_file(gchar *filename);
 
+#endif /* CONFIGURATION_H_ */

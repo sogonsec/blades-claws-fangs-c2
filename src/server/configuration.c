@@ -5,7 +5,6 @@ Settings* load_configuration_file(gchar *filename) {
 	GKeyFile *keyfile;
 	GKeyFileFlags flags;
 	GError *error = NULL;
-	gsize length;
 
 	/* Create a new GKeyFile object and a bitwise list of flags. */
 	keyfile = g_key_file_new();
