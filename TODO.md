@@ -4,7 +4,7 @@ Reference https://attack.mitre.org/tactics/TA0011/ to try to be "compliant" to o
 
 # Server / Generic
 
-* Create command protocol, a common way of signaling to do things using Stargate references
+* Create command protocol, a common way of signaling to do things
 * Create a generic library to handle command protocol independent of the service/agent 
 * Create application protocol service mechanisms (the idea is to hide from casual onlookers and try to not seem out of the ordinary, but obviously not entirely hidden)
     * Create HTTP service, perhaps encode the payload in a header 
