@@ -1,4 +1,4 @@
-# ogre - C2 Server and Agents
+# Ogre - C2 Server and Agents
 
 The purpose of this project is for me to learn to build a C2 server and agents for Windows, Linux, and FreeBSD. Additionally, there's some other goals such as getting better at C programming (it has been a long time), use ICMP and other protocols for unintended purposes, writing Windows agents to evade detection, and joining in the fun of everyone else building C2 software.
 
