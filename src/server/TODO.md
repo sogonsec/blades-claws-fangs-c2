@@ -7,7 +7,7 @@
   * [ ] libressl
 * [x] Handle a configuration file
 * [x] Handle command line arguments (override configuration file mostly)
-* [ ] Handle socket creation
+* [x] Handle socket creation
 * [ ] Handle socket event callbacks
 * [ ] Logging facilities
  
