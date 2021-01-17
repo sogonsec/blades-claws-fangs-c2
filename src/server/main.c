@@ -1,8 +1,15 @@
+#define G_LOG_USE_STRUCTURED 1
+#include <glib.h>
+#include <glib/gi18n.h>
+
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <fcntl.h>
 
 #include <event2/event.h> /* http://www.wangafu.net/~nickm/libevent-book/01_intro.html */
+#include <event2/buffer.h>
+#include <event2/bufferevent.h>
+
 
 #include <assert.h>
 #include <unistd.h>
@@ -11,9 +18,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#define G_LOG_USE_STRUCTURED 1
-#include <glib.h>
-#include <glib/gi18n.h>
+
 
 #include "cli_arguments.h"
 #include "configuration.h"
@@ -24,7 +29,12 @@
 int main(int argc, char **argv) {
 	gchar **cli_args; /* CLI arguments */
 	Settings *conf; /* All settings */
+	struct event_base *base; 
 
+	base = event_base_new();
+	if (!base)
+	  g_error("event_base_new() failed");
+       
 	/*
 	 * Read command line arguments
 	 */
@@ -71,14 +81,30 @@ int main(int argc, char **argv) {
 	/*
 	 * Create sockets, register callbacks
 	 */
-	/* TODO: plugin_hook */
+	/* TODO: plugin hook */
 	if (conf->service_enable_dns) {
+	  /* TODO: plugin hook */
+	  
+	  
+	  /* Create socket */
+	  /* Create service */
+	  /* Register service */
+	  
+	  /* TODO: plugin hook */
 	}
 	if (conf->service_enable_http) {
+	  /* TODO: plugin hook */
+	  /* TODO: plugin hook */	  
 	}
 	if (conf->service_enable_smtp) {
+	  /* TODO: plugin hook */
+	  /* TODO: plugin hook */	  
 	}
 	/* TODO: plugin_hook */
 
+
+	/* TODO: plugin hook */
+	event_base_dispatch(base);
+	/* TODO: plugin hook */
 	return (EXIT_SUCCESS);
 }
