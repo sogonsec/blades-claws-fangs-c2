@@ -4,6 +4,7 @@
 
 #include <netinet/in.h>
 #include <sys/socket.h>
+
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -22,26 +23,22 @@
 #include "configuration.h"
 #include "service/service.h"
 
-
 int main(int argc, char **argv)
 {
-	gchar **cli_args;		 /* CLI arguments */
-	Settings *conf;			 /* All settings */
-	struct event_base *base; /* LibEvent */
-	GArray *ServiceDatas = g_array_new(FALSE, FALSE, sizeof (ServiceData*)); /* Services */
+	gchar **cli_args;														 /* CLI arguments */
+	Settings *conf;															 /* All settings */
+	struct event_base *base;												 /* LibEvent */
+	GArray *ServiceDatas = g_array_new(FALSE, FALSE, sizeof(ServiceData *)); /* Services */
 
 	base = event_base_new();
 	if (!base)
 		g_error("event_base_new() failed");
 
-		/*
+	/*
 	 * Read command line arguments
 	 */
-#ifdef G_OS_WIN32
-	cli_args = g_win32_get_command_line();
-#else
+
 	cli_args = g_strdupv(argv);
-#endif
 	cli_arguments_parse(cli_args);
 	g_strfreev(cli_args);
 
@@ -112,11 +109,9 @@ int main(int argc, char **argv)
 	}
 	/* TODO: plugin_hook */
 
-
 	/* TODO: plugin hook */
 	event_base_dispatch(base);
 	/* TODO: plugin hook */
-
 
 	/* 
 	 * Cleanup 

@@ -1,4 +1,3 @@
-
 #include "service.h"
 
 ServiceData *service_generate(gint service_type, gint service_proto, gint port, struct event_base *base)
@@ -15,8 +14,6 @@ ServiceData *service_generate(gint service_type, gint service_proto, gint port, 
     g_debug("service_type=%i", service_data->service_type);
     g_debug("service_proto=%i", service_data->service_proto);
     g_debug("port=%i", service_data->port);
-
-
 
     /* Create socket */
     sin.sin_family = AF_INET;
@@ -37,28 +34,24 @@ ServiceData *service_generate(gint service_type, gint service_proto, gint port, 
     evutil_make_socket_nonblocking(listener);
     service_data->socket = listener;
 
-#ifndef WIN32
-    {
-        int one = 1;
-        setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
-    }
-#endif
     /* Bind the socket */
     g_debug("Calling bind()");
     if (bind(listener, (struct sockaddr *)&sin, sizeof(sin)) < 0)
     {
-        g_debug("bind() failed");
+        g_error("bind() failed");
     }
-    else {
+    else
+    {
         g_debug("bind() passed");
     }
 
     g_debug("Calling listen()");
     if (listen(listener, 16) < 0)
     {
-        g_debug("listen() failed");
+        g_error("listen() failed");
     }
-    else {
+    else
+    {
         g_debug("listen() passed");
     }
 
