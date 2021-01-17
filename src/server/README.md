@@ -10,5 +10,5 @@ make
 # Running
 
 ```
-G_MESSAGES_DEBUG=all ./ori --help
+G_MESSAGES_DEBUG=all ./ogre_c2 --help
 ```
