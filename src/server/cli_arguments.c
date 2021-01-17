@@ -1,6 +1,6 @@
 /*
  * To show verbose and debug messages
- * G_MESSAGES_DEBUG=all ./ori ...
+ * G_MESSAGES_DEBUG=all ./ogre_c2 ...
  * https://people.gnome.org/~ryanl/glib-docs/glib-Message-Logging.html
  * Will control better with another logging manager, probably my own g_log handler.
  *
@@ -19,25 +19,25 @@ void cli_arguments_parse(gchar **args) {
 
 	static GOptionEntry cli_argument_options[] =
 	{
-		{"service_enable_dns", 0, 0, G_OPTION_ARG_NONE,
+		{"service-enable-dns", 0, 0, G_OPTION_ARG_NONE,
 				&cli_argument_service_enable_dns, "Enable DNS Service", NULL},
-	    {"service_enable_http", 0, 0, G_OPTION_ARG_NONE,
+	    {"service-enable-http", 0, 0, G_OPTION_ARG_NONE,
 	    		&cli_argument_service_enable_http, "Enable HTTP Service", NULL},
-	    {"service_enable_smtp", 0, 0, G_OPTION_ARG_NONE,
+	    {"service-enable-smtp", 0, 0, G_OPTION_ARG_NONE,
 	    		&cli_argument_service_enable_smtp, "Enable SMTP Service", NULL},
-		{"configuration_file", 'c', 0, G_OPTION_ARG_FILENAME,
+		{"configuration-file", 'c', 0, G_OPTION_ARG_FILENAME,
 				&cli_argument_configuration_file, "Configuration File", NULL},
 		{NULL}
 	};
 
 	/* Defaults */
 	if (!cli_argument_configuration_file) {
-		cli_argument_configuration_file = "ori.ini";
+		cli_argument_configuration_file = "ogre.ini";
 	}
 
 
 	context = g_option_context_new ("");
-	g_option_context_set_summary (context, "Ori C2 - A WIP C2 program written by a @sogonsec");
+	g_option_context_set_summary (context, "Ogre C2 - A WIP C2 program written by a @sogonsec");
 	g_option_context_add_main_entries(context, cli_argument_options, NULL);
 	if (!g_option_context_parse_strv(context, &args, &error)) {
 		g_error("command line argument parsing failed: %s\n", error->message);
