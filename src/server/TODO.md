@@ -8,7 +8,7 @@
 * [x] Handle a configuration file
 * [x] Handle command line arguments (override configuration file mostly)
 * [x] Handle socket creation
-* [ ] Handle socket event callbacks
+* [x] Handle socket event callbacks
 * [ ] Logging facilities
  
 # Specifics
