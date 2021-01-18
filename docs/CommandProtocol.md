@@ -26,4 +26,5 @@ Note: all network communications should be encrypted in transit tunnels and data
 - winpeas/linpeas/linenum.sh output or compatible checks
 - agent operational modes for detection (super sneaky or super loud/who cares, etc)
 - shells (reverse and bound)
-- agent check in with server every so often for commands to run (guess a queue will be required) or to let the server know they're still alive.
+- agent check in with server every so often for commands to run (guess a queue will be required). This is mainly for compromised hosts that may not be directly routable or addressable, like if it is behind a NAT or FW blocks inbound but not outbound, etc.
+- agent checkin (configurable if enabled and needs to have non-static timing/behavior)
