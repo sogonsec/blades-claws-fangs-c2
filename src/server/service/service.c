@@ -45,14 +45,17 @@ ServiceData *service_generate(gint service_type, gint service_proto, gint port, 
         g_debug("bind() passed");
     }
 
-    g_debug("Calling listen()");
-    if (listen(listener, 16) < 0)
-    {
-        g_error("listen() failed");
-    }
-    else
-    {
-        g_debug("listen() passed");
+    if (service_proto == SERVICE_PROTO_TCP) {
+        g_debug("Calling listen()");
+        if (listen(listener, 16) < 0)
+        {
+            perror("listen()");
+            g_error("listen() failed");
+        }
+        else
+        {
+            g_debug("listen() passed");
+        }
     }
 
     /* Register callbacks to libevent */

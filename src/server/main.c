@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 		/* TODO: plugin hook */
 
 		ServiceData *service_data_dns;
-		service_data_dns = service_generate(SERVICE_TYPE_DNS, SERVICE_PROTO_UDP, 1053, base);
+		service_data_dns = service_generate(SERVICE_TYPE_DNS, SERVICE_PROTO_UDP, 53, base);
 		g_array_append_val(ServiceDatas, service_data_dns);
 
 		/* TODO: plugin hook */
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 		/* TODO: plugin hook */
 
 		ServiceData *service_data_http;
-		service_data_http = service_generate(SERVICE_TYPE_HTTP, SERVICE_PROTO_TCP, 1080, base);
+		service_data_http = service_generate(SERVICE_TYPE_HTTP, SERVICE_PROTO_TCP, 80, base);
 		g_array_append_val(ServiceDatas, service_data_http);
 
 		/* TODO: plugin hook */
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 		/* TODO: plugin hook */
 
 		ServiceData *service_data_smtp;
-		service_data_smtp = service_generate(SERVICE_TYPE_SMTP, SERVICE_PROTO_TCP, 1025, base);
+		service_data_smtp = service_generate(SERVICE_TYPE_SMTP, SERVICE_PROTO_TCP, 25, base);
 		g_array_append_val(ServiceDatas, service_data_smtp);
 
 		/* TODO: plugin hook */
