@@ -10,6 +10,8 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
+#include "service.h"
+
 struct settings {
 	gchar *configuration_file;
 	gint service_enable_dns;

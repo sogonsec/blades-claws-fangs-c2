@@ -10,6 +10,10 @@
 #include "service_http.h"
 #include "service_smtp.h"
 
+#define SERVICE_STATUS_UNKNOWN 0
+#define SERVICE_STATUS_DISABLED 1
+#define SERVICE_STATUS_ENABLED 2
+
 #define SERVICE_PROTO_TCP 1
 #define SERVICE_PROTO_UDP 2
 /*#define SERVICE_PROTO_UNIX  4*/

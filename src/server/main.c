@@ -41,9 +41,9 @@ main(int argc, char **argv)
 
 	/* Init configuration */
 	conf->configuration_file = "ogre.ini";
-	conf->service_enable_dns = -1;
-	conf->service_enable_http = -1;
-	conf->service_enable_smtp = -1;
+	conf->service_enable_dns = SERVICE_STATUS_UNKNOWN;
+	conf->service_enable_http = SERVICE_STATUS_UNKNOWN;
+	conf->service_enable_smtp = SERVICE_STATUS_UNKNOWN;
 
 	/* Read command line arguments */
 	cli_args = g_strdupv(argv);
@@ -57,7 +57,7 @@ main(int argc, char **argv)
 	/* Service provisioning, setup, and registering. - Create sockets,
 	 * register callbacks */
 	/* TODO: plugin hook */
-	if (conf->service_enable_dns == 1) {
+	if (conf->service_enable_dns == SERVICE_STATUS_ENABLED) {
 		/* TODO: plugin hook */
 
 		struct service_data *service_data_dns;
@@ -67,7 +67,7 @@ main(int argc, char **argv)
 
 		/* TODO: plugin hook */
 	}
-	if (conf->service_enable_http == 1) {
+	if (conf->service_enable_http == SERVICE_STATUS_ENABLED) {
 		/* TODO: plugin hook */
 
 		struct service_data *service_data_http;
@@ -77,7 +77,7 @@ main(int argc, char **argv)
 
 		/* TODO: plugin hook */
 	}
-	if (conf->service_enable_smtp == 1) {
+	if (conf->service_enable_smtp == SERVICE_STATUS_ENABLED) {
 		/* TODO: plugin hook */
 
 		struct service_data *service_data_smtp;

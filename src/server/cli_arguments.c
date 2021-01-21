@@ -41,13 +41,13 @@ cli_arguments_parse(gchar ** args, struct settings *conf)
 		exit(EXIT_FAILURE);
 	}
 	if (cli_argument_service_enable_dns) {
-		conf->service_enable_dns = 1;
+		conf->service_enable_dns = SERVICE_STATUS_ENABLED;
 	}
 	if (cli_argument_service_enable_http) {
-		conf->service_enable_http = 1;
+		conf->service_enable_http = SERVICE_STATUS_ENABLED;
 	}
 	if (cli_argument_service_enable_smtp) {
-		conf->service_enable_smtp = 1;
+		conf->service_enable_smtp = SERVICE_STATUS_ENABLED;
 	}
 	if (cli_argument_configuration_file) {
 		strlcpy(conf->configuration_file, cli_argument_configuration_file, sizeof(conf->configuration_file));

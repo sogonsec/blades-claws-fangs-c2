@@ -22,13 +22,13 @@ load_configuration_file(struct settings *conf)
 
 	/* Store only if it hasn't been stored before (do not override CLI
 	 * args) */
-	if (conf->service_enable_dns == -1) {
-		conf->service_enable_dns = (gint) (service_enable_dns ? 1 : 0);
+	if (conf->service_enable_dns == SERVICE_STATUS_UNKNOWN) {
+		conf->service_enable_dns = (gint) (service_enable_dns ? SERVICE_STATUS_ENABLED : SERVICE_STATUS_DISABLED);
 	}
-	if (conf->service_enable_http == -1) {
-		conf->service_enable_http = (gint) (service_enable_http ? 1 : 0);
+	if (conf->service_enable_http == SERVICE_STATUS_UNKNOWN) {
+		conf->service_enable_http = (gint) (service_enable_http ? SERVICE_STATUS_ENABLED : SERVICE_STATUS_DISABLED);
 	}
-	if (conf->service_enable_smtp == -1) {
-		conf->service_enable_smtp = (gint) (service_enable_smtp ? 1 : 0);
+	if (conf->service_enable_smtp == SERVICE_STATUS_UNKNOWN) {
+		conf->service_enable_smtp = (gint) (service_enable_smtp ? SERVICE_STATUS_ENABLED : SERVICE_STATUS_DISABLED);
 	}
 }
