@@ -18,4 +18,4 @@ void service_smtp_callback_connection_new(evutil_socket_t listener, short event,
 void service_smtp_callback_error(struct bufferevent *bev, short error, void *ctx);
 void service_smtp_callback_read(struct bufferevent *bev, void *ctx);
 
-#endif /* SERVER_SERVICE_SMTP_H_ */
+#endif				/* SERVER_SERVICE_SMTP_H_ */

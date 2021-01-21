@@ -19,18 +19,14 @@
 #define SERVICE_TYPE_HTTP 4
 /*#define SERVICE_TYTP_UNIX    8*/
 
-typedef struct
-{
-    /**
-     * Networking
-     */
-    gint service_proto;
-    gint service_type;
-    gint port;
-    evutil_socket_t socket;
-    struct sockaddr_in *sin;
-} ServiceData;
+typedef struct service_data {
+	gint service_proto;
+	gint service_type;
+	gint port;
+	evutil_socket_t socket;
+	struct sockaddr_in *sin;
+};
 
-ServiceData *service_generate(gint service_type, gint service_proto, gint port, struct event_base *base);
+struct service_data *service_generate(gint service_type, gint service_proto, gint port, struct event_base *base);
 
-#endif /* SERVER_SERVICE_H_ */
+#endif				/* SERVER_SERVICE_H_ */

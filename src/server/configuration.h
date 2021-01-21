@@ -10,14 +10,13 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-typedef struct
-{
+struct settings {
 	gchar *configuration_file;
 	gboolean service_enable_dns;
 	gboolean service_enable_http;
 	gboolean service_enable_smtp;
-} Settings;
+};
 
-Settings *load_configuration_file(gchar *filename);
+struct settings *load_configuration_file(gchar * filename);
 
-#endif /* SERVER_CONFIGURATION_H_ */
+#endif				/* SERVER_CONFIGURATION_H_ */

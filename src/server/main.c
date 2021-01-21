@@ -8,7 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <event2/event.h> /* http://www.wangafu.net/~nickm/libevent-book/01_intro.html */
+#include <event2/event.h>
 #include <event2/buffer.h>
 #include <event2/bufferevent.h>
 
@@ -23,85 +23,73 @@
 #include "configuration.h"
 #include "service/service.h"
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
-	gchar **cli_args;														 /* CLI arguments */
-	Settings *conf;															 /* All settings */
-	struct event_base *base;												 /* LibEvent */
-	GArray *ServiceDatas = g_array_new(FALSE, FALSE, sizeof(ServiceData *)); /* Services */
+	gchar **cli_args;	/* CLI arguments */
+	struct settings *conf;	/* All settings */
+	struct event_base *base;/* LibEvent */
+	GArray *ServiceDatas = g_array_new(FALSE, FALSE, sizeof(struct server_data *));	/* Services */
 
 	base = event_base_new();
 	if (!base)
 		g_error("event_base_new() failed");
 
-	/*
-	 * Read command line arguments
-	 */
+	/* Read command line arguments */
 
 	cli_args = g_strdupv(argv);
 	cli_arguments_parse(cli_args);
 	g_strfreev(cli_args);
 
-	/*
-	 * Configuration file handling
-	 */
+	/* Configuration file handling */
 	conf = load_configuration_file(cli_argument_configuration_file);
 
 	/* CLI overrides */
-	if (cli_argument_service_enable_dns && cli_argument_service_enable_dns != conf->service_enable_dns)
-	{
+	if (cli_argument_service_enable_dns && cli_argument_service_enable_dns != conf->service_enable_dns) {
 		g_debug("CLI override for service_enable_dns");
 		conf->service_enable_dns = cli_argument_service_enable_dns;
 	}
-	if (cli_argument_service_enable_http && cli_argument_service_enable_http != conf->service_enable_http)
-	{
+	if (cli_argument_service_enable_http && cli_argument_service_enable_http != conf->service_enable_http) {
 		g_debug("CLI override for service_enable_http");
 		conf->service_enable_http = cli_argument_service_enable_http;
 	}
-	if (cli_argument_service_enable_smtp && cli_argument_service_enable_smtp != conf->service_enable_smtp)
-	{
+	if (cli_argument_service_enable_smtp && cli_argument_service_enable_smtp != conf->service_enable_smtp) {
 		g_debug("CLI override for service_enable_smtp");
-
 		conf->service_enable_smtp = cli_argument_service_enable_smtp;
 	}
 	g_debug("FINAL configuration_file: %s", conf->configuration_file);
 	g_debug("FINAL service_enable_dns: %s",
-			(conf->service_enable_dns ? "TRUE" : "FALSE"));
+	    (conf->service_enable_dns ? "TRUE" : "FALSE"));
 	g_debug("FINAL service_enable_http: %s",
-			(conf->service_enable_http ? "TRUE" : "FALSE"));
+	    (conf->service_enable_http ? "TRUE" : "FALSE"));
 	g_debug("FINAL service_enable_smtp: %s",
-			(conf->service_enable_smtp ? "TRUE" : "FALSE"));
+	    (conf->service_enable_smtp ? "TRUE" : "FALSE"));
 
-	/*
-	 * Service provisioning, setup, and registering.
-	 * - Create sockets, register callbacks
-	 */
+	/* Service provisioning, setup, and registering. - Create sockets,
+	 * register callbacks */
 	/* TODO: plugin hook */
-	if (conf->service_enable_dns)
-	{
+	if (conf->service_enable_dns) {
 		/* TODO: plugin hook */
 
-		ServiceData *service_data_dns;
+		struct service_data *service_data_dns;
 		service_data_dns = service_generate(SERVICE_TYPE_DNS, SERVICE_PROTO_UDP, 53, base);
 		g_array_append_val(ServiceDatas, service_data_dns);
 
 		/* TODO: plugin hook */
 	}
-	if (conf->service_enable_http)
-	{
+	if (conf->service_enable_http) {
 		/* TODO: plugin hook */
 
-		ServiceData *service_data_http;
+		struct service_data *service_data_http;
 		service_data_http = service_generate(SERVICE_TYPE_HTTP, SERVICE_PROTO_TCP, 80, base);
 		g_array_append_val(ServiceDatas, service_data_http);
 
 		/* TODO: plugin hook */
 	}
-	if (conf->service_enable_smtp)
-	{
+	if (conf->service_enable_smtp) {
 		/* TODO: plugin hook */
 
-		ServiceData *service_data_smtp;
+		struct service_data *service_data_smtp;
 		service_data_smtp = service_generate(SERVICE_TYPE_SMTP, SERVICE_PROTO_TCP, 25, base);
 		g_array_append_val(ServiceDatas, service_data_smtp);
 
@@ -113,10 +101,9 @@ int main(int argc, char **argv)
 	event_base_dispatch(base);
 	/* TODO: plugin hook */
 
-	/* 
-	 * Cleanup 
-	 */
+	/* Cleanup */
 	/* XXX - Close all sockets */
+	g_slice_free(struct settings, conf);
 	g_array_free(ServiceDatas, TRUE);
 
 	return (EXIT_SUCCESS);

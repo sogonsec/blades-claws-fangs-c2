@@ -8,66 +8,54 @@
 
 #include "cli_arguments.h"
 
-void cli_arguments_parse(gchar **args)
+void
+cli_arguments_parse(gchar ** args)
 {
 	GError *error = NULL;
 	GOptionContext *context;
 
 	static GOptionEntry cli_argument_options[] =
-		{
-			{"service-enable-dns", 0, 0, G_OPTION_ARG_NONE,
-			 &cli_argument_service_enable_dns, "Enable DNS Service", NULL},
-			{"service-enable-http", 0, 0, G_OPTION_ARG_NONE,
-			 &cli_argument_service_enable_http, "Enable HTTP Service", NULL},
-			{"service-enable-smtp", 0, 0, G_OPTION_ARG_NONE,
-			 &cli_argument_service_enable_smtp, "Enable SMTP Service", NULL},
-			{"configuration-file", 'c', 0, G_OPTION_ARG_FILENAME,
-			 &cli_argument_configuration_file, "Configuration File", NULL},
-			{NULL}
-		};
+	{
+		{"service-enable-dns", 0, 0, G_OPTION_ARG_NONE,
+		&cli_argument_service_enable_dns, "Enable DNS Service", NULL},
+		{"service-enable-http", 0, 0, G_OPTION_ARG_NONE,
+		&cli_argument_service_enable_http, "Enable HTTP Service", NULL},
+		{"service-enable-smtp", 0, 0, G_OPTION_ARG_NONE,
+		&cli_argument_service_enable_smtp, "Enable SMTP Service", NULL},
+		{"configuration-file", 'c', 0, G_OPTION_ARG_FILENAME,
+		&cli_argument_configuration_file, "Configuration File", NULL},
+		{NULL}
+	};
 
 	/* Defaults */
-	if (!cli_argument_configuration_file)
-	{
+	if (!cli_argument_configuration_file) {
 		cli_argument_configuration_file = "ogre.ini";
 	}
-
 	context = g_option_context_new("");
 	g_option_context_set_summary(context, "Ogre C2 - A WIP C2 program written by a @sogonsec");
 	g_option_context_add_main_entries(context, cli_argument_options, NULL);
-	if (!g_option_context_parse_strv(context, &args, &error))
-	{
+	if (!g_option_context_parse_strv(context, &args, &error)) {
 		g_error("command line argument parsing failed: %s\n", error->message);
 		exit(EXIT_FAILURE);
 	}
-
 	g_log_set_handler(G_LOG_DOMAIN, G_LOG_LEVEL_MASK, g_log_default_handler, NULL);
 
-	if (cli_argument_service_enable_dns)
-	{
+	if (cli_argument_service_enable_dns) {
 		g_info("Enabling the DNS service.\n");
 		g_debug("cli_argument_service_enable_dns is TRUE");
-	}
-	else
-	{
+	} else {
 		g_debug("cli_argument_service_enable_dns is FALSE");
 	}
-	if (cli_argument_service_enable_http)
-	{
+	if (cli_argument_service_enable_http) {
 		g_info("Enabling the HTTP service.\n");
 		g_debug("cli_argument_service_enable_http is TRUE");
-	}
-	else
-	{
+	} else {
 		g_debug("cli_argument_service_enable_http is FALSE");
 	}
-	if (cli_argument_service_enable_smtp)
-	{
+	if (cli_argument_service_enable_smtp) {
 		g_info("Enabling the SMTP service.\n");
 		g_debug("cli_argument_service_enable_smtp is TRUE");
-	}
-	else
-	{
+	} else {
 		g_debug("cli_argument_service_enable_smtp is FALSE");
 	}
 	g_debug("cli_argument_configuration_file = %s", cli_argument_configuration_file);
