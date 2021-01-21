@@ -19,7 +19,7 @@
 #define SERVICE_TYPE_HTTP 4
 /*#define SERVICE_TYTP_UNIX    8*/
 
-typedef struct service_data {
+struct service_data {
 	gint service_proto;
 	gint service_type;
 	gint port;
