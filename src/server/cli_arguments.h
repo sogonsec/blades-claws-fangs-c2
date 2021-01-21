@@ -4,11 +4,8 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
-gboolean cli_argument_service_enable_dns;
-gboolean cli_argument_service_enable_http;
-gboolean cli_argument_service_enable_smtp;
-gchar *cli_argument_configuration_file;
+#include "configuration.h"
 
-void cli_arguments_parse(gchar ** args);
+void cli_arguments_parse(gchar ** args, struct settings *conf);
 
 #endif				/* SERVER_CLI_ARGUMENTS_H_ */

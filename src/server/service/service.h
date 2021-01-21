@@ -17,7 +17,7 @@
 #define SERVICE_TYPE_DNS 1
 #define SERVICE_TYPE_SMTP 2
 #define SERVICE_TYPE_HTTP 4
-/*#define SERVICE_TYTP_UNIX    8*/
+/*#define SERVICE_TYPE_UNIX    8*/
 
 struct service_data {
 	gint service_proto;

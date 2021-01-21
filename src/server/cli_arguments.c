@@ -9,10 +9,15 @@
 #include "cli_arguments.h"
 
 void
-cli_arguments_parse(gchar ** args)
+cli_arguments_parse(gchar ** args, struct settings *conf)
 {
 	GError *error = NULL;
 	GOptionContext *context;
+
+	static gboolean cli_argument_service_enable_dns;
+	static gboolean cli_argument_service_enable_http;
+	static gboolean cli_argument_service_enable_smtp;
+	static gchar *cli_argument_configuration_file;
 
 	static GOptionEntry cli_argument_options[] =
 	{
@@ -28,9 +33,6 @@ cli_arguments_parse(gchar ** args)
 	};
 
 	/* Defaults */
-	if (!cli_argument_configuration_file) {
-		cli_argument_configuration_file = "ogre.ini";
-	}
 	context = g_option_context_new("");
 	g_option_context_set_summary(context, "Ogre C2 - A WIP C2 program written by a @sogonsec");
 	g_option_context_add_main_entries(context, cli_argument_options, NULL);
@@ -38,26 +40,16 @@ cli_arguments_parse(gchar ** args)
 		g_error("command line argument parsing failed: %s\n", error->message);
 		exit(EXIT_FAILURE);
 	}
-	g_log_set_handler(G_LOG_DOMAIN, G_LOG_LEVEL_MASK, g_log_default_handler, NULL);
-
 	if (cli_argument_service_enable_dns) {
-		g_info("Enabling the DNS service.\n");
-		g_debug("cli_argument_service_enable_dns is TRUE");
-	} else {
-		g_debug("cli_argument_service_enable_dns is FALSE");
+		conf->service_enable_dns = 1;
 	}
 	if (cli_argument_service_enable_http) {
-		g_info("Enabling the HTTP service.\n");
-		g_debug("cli_argument_service_enable_http is TRUE");
-	} else {
-		g_debug("cli_argument_service_enable_http is FALSE");
+		conf->service_enable_http = 1;
 	}
 	if (cli_argument_service_enable_smtp) {
-		g_info("Enabling the SMTP service.\n");
-		g_debug("cli_argument_service_enable_smtp is TRUE");
-	} else {
-		g_debug("cli_argument_service_enable_smtp is FALSE");
+		conf->service_enable_smtp = 1;
 	}
-	g_debug("cli_argument_configuration_file = %s", cli_argument_configuration_file);
-	g_info("Loading configuration from file '%s'.\n", cli_argument_configuration_file);
+	if (cli_argument_configuration_file) {
+		strlcpy(conf->configuration_file, cli_argument_configuration_file, sizeof(conf->configuration_file));
+	}
 }
