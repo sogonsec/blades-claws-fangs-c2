@@ -6,11 +6,11 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 	struct event_base *base = arg;
 	struct sockaddr_in server_sin;
 	socklen_t server_sz = sizeof(server_sin);
-	struct dns_header *header = g_slice_new(struct dns_header);
+	struct dns_request *request = g_slice_new(struct dns_request);
 	char buffer[512] = {0};
 	gint16 id, flags, qdcount, ancount, nscount, arcount;
 
-	/* Read the header */
+	/* Read the request */
 	/* https://www.ietf.org/rfc/rfc1035.txt */
 
 	if (recvfrom(listener, &buffer, sizeof(buffer), 0,
@@ -19,6 +19,8 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 		g_error("service_dns_callback_connection_new: recvfrom() failed");
 		event_base_loopbreak(base);
 	}
+
+	/* HEADER */
 	id = (u_char) buffer[0] + (u_char) buffer[1];
 	flags = (u_char) buffer[2] + (u_char) buffer[3];
 	qdcount = (u_char) buffer[4] + (u_char) buffer[5];
@@ -26,42 +28,83 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 	nscount = (u_char) buffer[8] + (u_char) buffer[9];
 	arcount = (u_char) buffer[10] + (u_char) buffer[11];
 
-	header->id = id;
-	header->qr = flags & header_mask_qr;
-	header->opcode = flags & header_mask_opcode;
-	header->aa = flags & header_mask_aa;
-	header->tc = flags & header_mask_tc;
-	header->rd = flags & header_mask_rd;
-	header->ra = flags & header_mask_ra;
+	request->id = id;
+	request->qr = flags & header_mask_qr;
+	request->opcode = flags & header_mask_opcode;
+	request->aa = flags & header_mask_aa;
+	request->tc = flags & header_mask_tc;
+	request->rd = flags & header_mask_rd;
+	request->ra = flags & header_mask_ra;
 
-	header->z = 0;
-	header->rcode = 0;
-	header->qdcount = qdcount;
-	header->ancount = ancount;
-	header->nscount = nscount;
-	header->arcount = arcount;
+	request->z = 0;
+	request->rcode = 0;
+	request->qdcount = qdcount;
+	request->ancount = ancount;
+	request->nscount = nscount;
+	request->arcount = arcount;
 
-	g_debug("header->id = %i", header->id);
-	g_debug("header->qr = %i", header->qr);
-	g_debug("header->opcode = %i", header->opcode);
-	g_debug("header->aa = %i", header->aa);
-	g_debug("header->tc = %i", header->tc);
-	g_debug("header->rd = %i", header->rd);
-	g_debug("header->ra = %i", header->ra);
-	g_debug("header->z = %i", header->z);
-	g_debug("header->rcode = %i", header->rcode);
-	g_debug("header->qdcount = %i", header->qdcount);
-	g_debug("header->ancount = %i", header->ancount);
-	g_debug("header->nscount = %i", header->nscount);
-	g_debug("header->arcount = %i", header->arcount);
+	g_debug("request->id = %i", request->id);
+	g_debug("request->qr = %i", request->qr);
+	g_debug("request->opcode = %i", request->opcode);
+	g_debug("request->aa = %i", request->aa);
+	g_debug("request->tc = %i", request->tc);
+	g_debug("request->rd = %i", request->rd);
+	g_debug("request->ra = %i", request->ra);
+	g_debug("request->z = %i", request->z);
+	g_debug("request->rcode = %i", request->rcode);
+	g_debug("request->qdcount = %i", request->qdcount);
+	g_debug("request->ancount = %i", request->ancount);
+	g_debug("request->nscount = %i", request->nscount);
+	g_debug("request->arcount = %i", request->arcount);
 
-	/* printf("buffer in hex: "); for (int i = 0; i < 512; i++)
-	 * printf("%02x ", buffer[i]); printf("\n"); */
+
+
+	/* QUESTION */
+	gint buffer_count = 12;
+	gint qname_chunk_size = (u_int) buffer[buffer_count];
+	buffer_count++;
+	GString *qname = g_string_new(NULL);
+    while (qname_chunk_size != 0) {
+        for (int i = 0; i < qname_chunk_size; i++) {
+            char c = (char) buffer[buffer_count];
+			buffer_count++;
+			qname = g_string_append_c(qname, c);
+        }
+        qname_chunk_size = (u_int) buffer[buffer_count];
+		buffer_count++;
+        if (qname_chunk_size != 0) 
+			g_string_append_c(qname, '.');
+    }
+	request->qname = qname->str;
+
+	request->qtype = (u_char) buffer[buffer_count];
+	buffer_count++;
+	request->qtype += (u_char) buffer[buffer_count];
+	buffer_count++;
+
+	request->qclass = (u_char) buffer[buffer_count];
+	buffer_count++;
+	request->qclass += (u_char) buffer[buffer_count];
+	buffer_count++;
+
+	g_debug("request->qname  = %s", request->qname);
+	g_debug("request->qtype  = %i", request->qtype);
+	g_debug("request->qclass = %i", request->qclass);
+
+
+
+	/*printf("remaining buffer in hex: "); 
+	for (int i = buffer_count; i < 512; i++)
+	 	printf("%02x ", buffer[i]); 
+	printf("\n");*/
 
 	/* Send the data back to the client */
 	/* if (sendto(sock, buf, sizeof(CLOCK_TV), 0, (struct sockaddr *)
 	 * &server_sin, server_sz) == -1 ) { perror("sendto()");
 	 * event_base_loopbreak(base); } */
 
-	g_slice_free(struct dns_header, header);
+	if (qname) 
+		g_string_free(qname, TRUE);
+	if (request)
+		g_slice_free(struct dns_request, request);
 }
