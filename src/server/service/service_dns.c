@@ -19,7 +19,6 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 		g_error("service_dns_callback_connection_new: recvfrom() failed");
 		event_base_loopbreak(base);
 	}
-
 	/* HEADER */
 	id = (u_char) buffer[0] + (u_char) buffer[1];
 	flags = (u_char) buffer[2] + (u_char) buffer[3];
@@ -64,17 +63,17 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 	gint qname_chunk_size = (u_int) buffer[buffer_count];
 	buffer_count++;
 	GString *qname = g_string_new(NULL);
-    while (qname_chunk_size != 0) {
-        for (int i = 0; i < qname_chunk_size; i++) {
-            char c = (char) buffer[buffer_count];
+	while (qname_chunk_size != 0) {
+		for (int i = 0; i < qname_chunk_size; i++) {
+			char c = (char)buffer[buffer_count];
 			buffer_count++;
 			qname = g_string_append_c(qname, c);
-        }
-        qname_chunk_size = (u_int) buffer[buffer_count];
+		}
+		qname_chunk_size = (u_int) buffer[buffer_count];
 		buffer_count++;
-        if (qname_chunk_size != 0) 
+		if (qname_chunk_size != 0)
 			g_string_append_c(qname, '.');
-    }
+	}
 	request->qname = qname->str;
 
 	request->qtype = (u_char) buffer[buffer_count];
@@ -93,17 +92,15 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 
 
 
-	/*printf("remaining buffer in hex: "); 
-	for (int i = buffer_count; i < 512; i++)
-	 	printf("%02x ", buffer[i]); 
-	printf("\n");*/
+	/* printf("remaining buffer in hex: "); for (int i = buffer_count; i <
+	 * 512; i++) printf("%02x ", buffer[i]); printf("\n"); */
 
 	/* Send the data back to the client */
 	/* if (sendto(sock, buf, sizeof(CLOCK_TV), 0, (struct sockaddr *)
 	 * &server_sin, server_sz) == -1 ) { perror("sendto()");
 	 * event_base_loopbreak(base); } */
 
-	if (qname) 
+	if (qname)
 		g_string_free(qname, TRUE);
 	if (request)
 		g_slice_free(struct dns_request, request);

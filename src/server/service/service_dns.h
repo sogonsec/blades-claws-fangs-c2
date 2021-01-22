@@ -11,7 +11,7 @@
 
 struct dns_request {
 	/* HEADER */
-	gint id;	
+	gint id;
 	gint qr;
 	gint opcode;
 	gint aa;
@@ -30,7 +30,6 @@ struct dns_request {
 	gint qtype;
 	gint qclass;
 };
-
 /*--Domain QTYPE----------------------------------------------------------
 A               1 a host address
 NS              2 an authoritative name server
