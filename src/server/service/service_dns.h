@@ -36,6 +36,7 @@ struct dns_request {
 	GArray *questions;	/* contains dns_question structs */
 };
 
+
 #define DNS_QTYPE_A 1		/* a host address */
 #define DNS_QTYPE_NS 2		/* an authoritative name server */
 #define DNS_QTYPE_MD 3		/* a mail destination (Obsolete - use MX) */
@@ -52,6 +53,7 @@ struct dns_request {
 #define DNS_QTYPE_MINFO 14	/* mailbox or mail list information */
 #define DNS_QTYPE_MX 15		/* mail exchange */
 #define DNS_QTYPE_TXT 16	/* text strings */
+#define DNS_QTYPE_AAAA 28   /* AAAA host record */
 #define DNS_QTYPE_AXFR 252	/* A request for a transfer of an entire zone */
 #define DNS_QTYPE_MAILB 253	/* A request for mailbox-related records (MB, MG or MR) */
 #define DNS_QTYPE_MAILA 254	/* A request for mail agent RRs (Obsolete - see MX) */
@@ -67,5 +69,7 @@ static const guint header_mask_rcode = 0x000F;
 
 void service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg);
 void service_dns_debug_request(struct dns_request *request);
+void service_dns_parse_request(char buffer[], struct dns_request *request);
+void service_dns_process_request(struct dns_request *request);
 
 #endif				/* SERVER_SERVICE_DNS_H_ */
