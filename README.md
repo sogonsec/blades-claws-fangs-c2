@@ -6,5 +6,3 @@ Almost a spec here https://attack.mitre.org/tactics/TA0011/, it would be cool to
 
 # Note 
 I have no intention of people using this C2 or it ever be production-ready. This a personal learning project only. 
-
-All efforts here are for me and me alone. Peace.
