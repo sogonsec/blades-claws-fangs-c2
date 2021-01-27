@@ -4,4 +4,7 @@ The purpose of this project is for me to learn to build a C2 (Command and Contro
 
 Almost a spec here https://attack.mitre.org/tactics/TA0011/, it would be cool to support most of the things there. Some things I don't know how to do yet, but having a project is a great way to figure it out!
 
-**Note: having people use this C2 or ever be production ready is not a goal. This a personal learning project.**
+# Note 
+I have no intention of people using this C2 or it ever be production-ready. This a personal learning project only. 
+
+All efforts here are for me and me alone. Peace.
