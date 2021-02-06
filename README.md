@@ -1,4 +1,4 @@
-# Blades, Claws, Fangs - C2
+# OGRE - C2
 
 The purpose of this project is for me to learn to build a C2 (Command and Control) server and agents for Windows, Linux, and FreeBSD. Additionally, there's some other goals such as getting better at C programming (it has been a long time), use ICMP and other protocols for unintended purposes, writing Windows agents to evade detection, and joining in the fun of everyone else building C2 software.
 
