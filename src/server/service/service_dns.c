@@ -44,15 +44,14 @@ service_dns_parse_request(char buffer[], struct dns_request *request)
 	arcount = (u_char) buffer[10] + (u_char) buffer[11];
 
 	request->header->id = id;
-	request->header->qr = flags & header_mask_qr;
+	request->header->qr     = flags & header_mask_qr;
 	request->header->opcode = flags & header_mask_opcode;
-	request->header->aa = flags & header_mask_aa;
-	request->header->tc = flags & header_mask_tc;
-	request->header->rd = flags & header_mask_rd;
-	request->header->ra = flags & header_mask_ra;
-
-	request->header->z = 0;
-	request->header->rcode = 0;
+	request->header->aa     = flags & header_mask_aa;
+	request->header->tc     = flags & header_mask_tc;
+	request->header->rd     = flags & header_mask_rd;
+	request->header->ra     = flags & header_mask_ra;
+	request->header->z      = flags & header_mask_z;
+	request->header->rcode  = flags & header_mask_rcode;
 	request->header->qdcount = qdcount;
 	request->header->ancount = ancount;
 	request->header->nscount = nscount;
