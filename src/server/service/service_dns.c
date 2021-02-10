@@ -30,33 +30,81 @@ service_dns_debug_request(struct dns_request *request)
 	}
 }
 
+
 void
-service_dns_parse_request(char buffer[], struct dns_request *request)
+service_dns_parse_request(u_char *buffer, struct dns_request *request, int request_size)
 {
-	gint id, flags, qdcount, ancount, nscount, arcount;
+	guint id, flags, qdcount, ancount, nscount, arcount;
+
+	id = 0;
+	flags = 0;
+	qdcount = 0;
+	ancount = 0;
+	nscount = 0;
+	arcount = 0;
+	request->header->qr     = 0;
+	request->header->opcode = 0;
+	request->header->aa     = 0;
+	request->header->tc     = 0;
+	request->header->rd     = 0;
+	request->header->ra     = 0;
+	request->header->z      = 0;
+	request->header->rcode  = 0;
 
 	/* HEADER */
-	id = (u_char) buffer[0] + (u_char) buffer[1];
-	flags = (u_char) buffer[2] + (u_char) buffer[3];
-	qdcount = (u_char) buffer[4] + (u_char) buffer[5];
-	ancount = (u_char) buffer[6] + (u_char) buffer[7];
-	nscount = (u_char) buffer[8] + (u_char) buffer[9];
-	arcount = (u_char) buffer[10] + (u_char) buffer[11];
+	id      = (guint) buffer[0] << 8 | buffer[1] << 0;
+	flags   = (guint) buffer[2] << 8 | buffer[3] << 0;
+	qdcount = (guint) buffer[4] << 8 | buffer[5] << 0;
+	ancount = (guint) buffer[6] << 8 | buffer[7] << 0;
+	nscount = (guint) buffer[8] << 8 | buffer[9] << 0;
+	arcount = (guint) buffer[10] << 8 | buffer[11] << 0;
 
-	request->header->id = id;
-	request->header->qr     = flags & header_mask_qr;
-	request->header->opcode = flags & header_mask_opcode;
-	request->header->aa     = flags & header_mask_aa;
-	request->header->tc     = flags & header_mask_tc;
-	request->header->rd     = flags & header_mask_rd;
-	request->header->ra     = flags & header_mask_ra;
-	request->header->z      = flags & header_mask_z;
-	request->header->rcode  = flags & header_mask_rcode;
+	request->header->id      = id;
 	request->header->qdcount = qdcount;
 	request->header->ancount = ancount;
 	request->header->nscount = nscount;
 	request->header->arcount = arcount;
 
+	/* Mask the value and bit shift so it is at the start of the bytes. */
+	request->header->qr     = (guint) flags & header_mask_qr;
+	request->header->aa     = request->header->aa >> 15;
+	request->header->opcode = (guint) flags & header_mask_opcode;
+	request->header->opcode = request->header->opcode >> 11;
+	request->header->aa     = (guint) flags & header_mask_aa;
+	request->header->aa     = request->header->aa >> 10;
+	request->header->tc     = (guint) flags & header_mask_tc;
+	request->header->tc     = request->header->tc >> 9;
+	request->header->rd     = (guint) flags & header_mask_rd;
+	request->header->rd     = request->header->rd >> 8;
+	request->header->ra     = (guint) flags & header_mask_ra;
+	request->header->ra     = request->header->ra >> 7;
+	request->header->z      = (guint) flags & header_mask_z;
+	request->header->ra     = request->header->ra >> 4;
+	request->header->rcode  = (guint) flags & header_mask_rcode;
+	request->header->ra     = request->header->ra >> 0;
+
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->qr     = %.16x -> %.16x (%i)", header_mask_qr, request->header->qr, request->header->qr);
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->opcode = %.16x -> %.16x (%i)", header_mask_opcode, request->header->opcode, request->header->opcode);
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->aa     = %.16x -> %.16x (%i)", header_mask_aa, request->header->aa, request->header->aa);
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->tc     = %.16x -> %.16x (%i)", header_mask_tc, request->header->tc, request->header->tc);
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->rd     = %.16x -> %.16x (%i)", header_mask_rd, request->header->rd, request->header->rd);
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->ra     = %.16x -> %.16x (%i)", header_mask_ra, request->header->ra, request->header->ra);
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->z      = %.16x -> %.16x (%i)", header_mask_z, request->header->z, request->header->z);
+	g_debug("flags                   = %.16x", flags);
+	g_debug("request->header->rcode  = %.16x -> %.16x (%i)", header_mask_rcode, request->header->rcode, request->header->rcode);
+
+	g_debug("request->header->id        = %.16x, %i", request->header->id, request->header->id);
+	g_debug("request->header->qdcount   = %.16x, %i", request->header->qdcount, request->header->qdcount);
+	g_debug("request->header->ancount   = %.16x, %i", request->header->ancount, request->header->ancount);
+	g_debug("request->header->nscount   = %.16x, %i", request->header->nscount, request->header->nscount);
+	g_debug("request->header->arcount   = %.16x, %i", request->header->arcount, request->header->arcount);
 
 	/* QUESTIONS */
 	gint buffer_count = 12;
@@ -68,7 +116,7 @@ service_dns_parse_request(char buffer[], struct dns_request *request)
 
 		while (qname_chunk_size != 0) {
 			for (int i = 0; i < qname_chunk_size; i++) {
-				char c = (char)buffer[buffer_count];
+				char c = (char) buffer[buffer_count];
 				buffer_count++;
 				qname = g_string_append_c(qname, c);
 			}
@@ -79,14 +127,14 @@ service_dns_parse_request(char buffer[], struct dns_request *request)
 		}
 		question->qname = qname;
 
-		question->qtype = (u_char) buffer[buffer_count];
+		question->qtype = (uint8_t) buffer[buffer_count];
 		buffer_count++;
-		question->qtype += (u_char) buffer[buffer_count];
+		question->qtype += (uint8_t) buffer[buffer_count];
 		buffer_count++;
 
-		question->qclass = (u_char) buffer[buffer_count];
+		question->qclass = (uint8_t) buffer[buffer_count];
 		buffer_count++;
-		question->qclass += (u_char) buffer[buffer_count];
+		question->qclass += (uint8_t) buffer[buffer_count];
 		buffer_count++;
 
 		g_array_append_val(request->questions, question);
@@ -144,7 +192,8 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 	struct event_base *base = arg;
 	struct sockaddr_in server_sin;
 	socklen_t server_sz = sizeof(server_sin);
-	char buffer[512] = {0};
+	u_char buffer[512] = {0};
+	int request_size = 0;
 
 	/* DNS Request data structures */
 	struct dns_request *request = g_slice_new(struct dns_request);
@@ -153,14 +202,15 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 
 
 	/* Read the request from the client, max 512 bytes for UDP */
-	if (recvfrom(listener, &buffer, sizeof(buffer), 0,
-	    (struct sockaddr *)&server_sin, &server_sz) == -1) {
+
+	request_size = recvfrom(listener, buffer, 512, 0, (struct sockaddr *)&server_sin, &server_sz);
+	if (request_size == -1) {
 		perror("recvfrom()");
 		g_error("service_dns_callback_connection_new: recvfrom() failed");
 		event_base_loopbreak(base);
 	}
 	/* Parse the request from a stream of bits to a usable data structure */
-	service_dns_parse_request(buffer, request);
+	service_dns_parse_request(buffer, request, request_size);
 	service_dns_debug_request(request);
 
 	/* Process the request data structure into a response data structure */
