@@ -18,8 +18,7 @@ service_generate(gint service_type, gint service_proto, gint port, struct event_
 
 	/* Create socket */
 	sin.sin_family = AF_INET;
-	sin.sin_addr.s_addr = 0;/* XXX support specifying the IP address to
-				 * bind on */
+	sin.sin_addr.s_addr = 0;/* XXX support specifying the IP address to bind on */
 	sin.sin_port = htons(port);
 	if (service_proto == SERVICE_PROTO_TCP) {
 		listener = socket(AF_INET, SOCK_STREAM, 0);

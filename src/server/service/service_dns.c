@@ -52,12 +52,36 @@ service_dns_parse_request(u_char *buffer, struct dns_request *request, int reque
 	request->header->rcode  = 0;
 
 	/* HEADER */
-	id      = (guint) buffer[0] << 8 | buffer[1] << 0;
+	/*id      = (guint) buffer[0] << 8 | buffer[1] << 0;
 	flags   = (guint) buffer[2] << 8 | buffer[3] << 0;
 	qdcount = (guint) buffer[4] << 8 | buffer[5] << 0;
 	ancount = (guint) buffer[6] << 8 | buffer[7] << 0;
 	nscount = (guint) buffer[8] << 8 | buffer[9] << 0;
 	arcount = (guint) buffer[10] << 8 | buffer[11] << 0;
+	g_debug("bitwize: id=%x", id);
+	g_debug("bitwize: flags=%x", flags);
+	g_debug("bitwize: qdcount=%x", qdcount);
+	g_debug("bitwize: ancount=%x", ancount);
+	g_debug("bitwize: nscount=%x", nscount);
+	g_debug("bitwize: arcount=%x", arcount);*/
+	memcpy(&id,      &buffer[0],  2);
+	memcpy(&flags,   &buffer[2],  2);
+	memcpy(&qdcount, &buffer[4],  2);
+	memcpy(&ancount, &buffer[6],  2);
+	memcpy(&nscount, &buffer[8],  2);
+	memcpy(&arcount, &buffer[10], 2);
+	id      = ntohs(id);
+	flags   = ntohs(flags);
+	qdcount = ntohs(qdcount);
+	ancount = ntohs(ancount);
+	nscount = ntohs(nscount);
+	arcount = ntohs(arcount);
+	/*g_debug("memcpy: id=%x", id);
+	g_debug("memcpy: flags=%x", flags);
+	g_debug("memcpy: qdcount=%x", qdcount);
+	g_debug("memcpy: ancount=%x", ancount);
+	g_debug("memcpy: nscount=%x", nscount);
+	g_debug("memcpy: arcount=%x", arcount);*/
 
 	request->header->id      = id;
 	request->header->qdcount = qdcount;
