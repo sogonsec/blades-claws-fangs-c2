@@ -31,6 +31,6 @@ struct service_data {
 	struct sockaddr_in *sin;
 };
 
-struct service_data *service_generate(gint, gint, gint, struct event_base *);
+struct service_data	*service_generate(gint, gint, gint, struct event_base *);
 
 #endif				/* SERVER_SERVICE_H_ */

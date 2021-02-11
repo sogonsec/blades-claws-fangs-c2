@@ -7,6 +7,6 @@
 #include "configuration.h"
 
 
-void cli_arguments_parse(gchar **, struct settings *);
+void    cli_arguments_parse(gchar **, struct settings *);
 
 #endif				/* SERVER_CLI_ARGUMENTS_H_ */
