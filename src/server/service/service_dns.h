@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 struct dns_header {
-	uint id;
+	guint id;
 	guint qr;
 	guint opcode;
 	guint aa;
@@ -18,11 +18,11 @@ struct dns_header {
 	guint rd;
 	guint ra;
 	guint z;
-	uint rcode;
-	uint qdcount;
-	uint ancount;
-	uint nscount;
-	uint arcount;
+	guint rcode;
+	guint qdcount;
+	guint ancount;
+	guint nscount;
+	guint arcount;
 };
 
 struct dns_question {
@@ -69,9 +69,9 @@ static const guint header_mask_ra     = 0x0080; /* 0000 0000 1000 0000 */
 static const guint header_mask_z      = 0x0070; /* 0000 0000 0111 0000 */
 static const guint header_mask_rcode  = 0x000F; /* 0000 0000 0000 1111 */
 
-void service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg);
-void service_dns_debug_request(struct dns_request *request);
-void service_dns_parse_request(u_char *buffer, struct dns_request *request, int request_size);
-void service_dns_process_request(struct dns_request *request);
+void service_dns_cb_conn_new(evutil_socket_t, short, void *);
+void service_dns_debug_request(struct dns_request *);
+void service_dns_parse_request(guchar*, struct dns_request*, int);
+void service_dns_process_request(struct dns_request *);
 
 #endif				/* SERVER_SERVICE_DNS_H_ */

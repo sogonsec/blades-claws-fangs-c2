@@ -32,7 +32,7 @@ service_dns_debug_request(struct dns_request *request)
 
 
 void
-service_dns_parse_request(u_char *buffer, struct dns_request *request, int request_size)
+service_dns_parse_request(guchar *buffer, struct dns_request *request, int request_size)
 {
 	guint id, flags, qdcount, ancount, nscount, arcount;
 
@@ -216,8 +216,8 @@ service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 	struct event_base *base = arg;
 	struct sockaddr_in server_sin;
 	socklen_t server_sz = sizeof(server_sin);
-	u_char buffer[512] = {0};
-	int request_size = 0;
+	guchar buffer[512] = {0};
+	gint request_size = 0;
 
 	/* DNS Request data structures */
 	struct dns_request *request = g_slice_new(struct dns_request);

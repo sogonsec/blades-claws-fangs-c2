@@ -19,6 +19,6 @@ struct settings {
 	gint service_enable_smtp;
 };
 
-void load_configuration_file(struct settings *conf);
+void load_configuration_file(struct settings *);
 
 #endif				/* SERVER_CONFIGURATION_H_ */
