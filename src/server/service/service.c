@@ -3,11 +3,12 @@
 struct service_data *
 service_generate(gint service_type, gint service_proto, gint port, struct event_base *base)
 {
-	struct service_data *data = g_slice_new(struct service_data);
+	struct service_data *data;
 	evutil_socket_t listener;
 	struct sockaddr_in sin;
 	struct event *listener_event;
 
+	data = g_slice_new(struct service_data);
 	data->service_type = service_type;
 	data->service_proto = service_proto;
 	data->port = port;

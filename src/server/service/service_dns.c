@@ -212,21 +212,24 @@ service_dns_process_request(struct dns_request *request)
 void
 service_dns_cb_conn_new(evutil_socket_t listener, short event, void *arg)
 {
-	/* Socket data structures */
-	struct event_base *base = arg;
+	struct event_base *base;
 	struct sockaddr_in server_sin;
-	socklen_t server_sz = sizeof(server_sin);
+	struct dns_request *request;
+	socklen_t server_sz;
 	guchar buffer[512] = {0};
-	gint request_size = 0;
+	gint request_size;
 
-	/* DNS Request data structures */
-	struct dns_request *request = g_slice_new(struct dns_request);
+	/* Initialize variables */
+	base = arg;
+	server_sz = sizeof(server_sin);
+	request_size = 0;
+
+	request = g_slice_new(struct dns_request);
 	request->header = g_slice_new(struct dns_header);
 	request->questions = g_array_new(FALSE, FALSE, sizeof(struct dns_question *));
 
 
 	/* Read the request from the client, max 512 bytes for UDP */
-
 	request_size = recvfrom(listener, buffer, 512, 0, (struct sockaddr *)&server_sin, &server_sz);
 	if (request_size == -1) {
 		perror("recvfrom()");
